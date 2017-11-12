@@ -40,7 +40,10 @@ while (error > 0.05)
     outOfOutput = logsig(outOfOutput);
     
     myError = Output - outOfOutput;
+    avPerformance = myError' * myError;
     
-    S2 = -2 * diff(logsig(n^2 * e
+    S2 = -2 * diff(logsig(outOfHidden*myError));
+    
+end
     
         

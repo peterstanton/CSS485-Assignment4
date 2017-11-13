@@ -34,22 +34,23 @@ while (tester > 0.05)
    myError = Output(:,i) - outOfOutput;
  %  S2 = -2. * diag(ones(size(outOfOutput))-(outOfOutput.*outOfOutput)) * myError;
   
-   S2 = -2.*diag((ones(size(outOfOutput))-outOfOutput).*outOfOutput)*myError;
+  % S2 = -2.*diag((ones(size(outOfOutput))-outOfOutput).*outOfOutput)*myError;
+   S2 = -2.*diag(ones(size(outOfOutput))-outOfOutput.*outOfOutput)*myError;
    
  %  S1 = diag(ones(size(outOfHidden))-(outOfHidden.*outOfHidden)) * OutputLayerWeights'*S2;
    
-   S1 = diag((ones(size(outOfHidden))-outOfHidden).*outOfHidden)*OutputLayerWeights'*S2;
+ %  S1 = diag((ones(size(outOfHidden))-outOfHidden).*outOfHidden)*OutputLayerWeights'*S2;
+   
+   S1 = diag(ones(size(outOfHidden))-outOfHidden.*outOfHidden)*OutputLayerWeights'*S2;
    
    IterationCount
    S1 
    S2
    myError
+         
+   OutputLayerWeights = OutputLayerWeights - LearningRate * S2 * outOfHidden';
    
-   newW2 = OutputLayerWeights-LearningRate*S2*(outOfHidden');
-   OutputLayerWeights = newW2;
-      
-   newW1 = HiddenLayerWeights-LearningRate*S1*(Input(:,i)');
-   HiddenLayerWeights = newW1;
+   HiddenLayerWeights = HiddenLayerWeights - LearningRate * S1 * Input(:,i)';
    
    newB2 = biasOutput-LearningRate.*S2;
    biasOutput = newB2;

@@ -13,7 +13,7 @@ function output = backprop()
  Input = [in0; in1; in2]';
  Output = [t0; t1; t2]';
  
- NumHidLayerNeurons = 2;
+ NumHidLayerNeurons = 5;
  
 HiddenLayerWeights = rand(NumHidLayerNeurons,30); % Weight matrix from Input to Hidden
 OutputLayerWeights = rand(3,NumHidLayerNeurons); % Weight matrix from Hidden to Output
@@ -25,7 +25,8 @@ ErrorVec(1:1000000) = 0;
 xVec(1:1000000) = 0;
 tester = 10.00;
 
-while (tester > 0.05)
+%while (tester > 0.05)
+while(IterationCount < 10000)
     i = randi(3);
     IterationCount = IterationCount + 1;           %Increment the counter
     outOfHidden = logsig(HiddenLayerWeights * Input(:,i) + biasHidden);   
@@ -33,12 +34,11 @@ while (tester > 0.05)
     
    myError = Output(:,i) - outOfOutput;
  %  S2 = -2. * diag(ones(size(outOfOutput))-(outOfOutput.*outOfOutput)) * myError;
-  
   % S2 = -2.*diag((ones(size(outOfOutput))-outOfOutput).*outOfOutput)*myError;
+  
    S2 = -2.*diag(ones(size(outOfOutput))-outOfOutput.*outOfOutput)*myError;
    
  %  S1 = diag(ones(size(outOfHidden))-(outOfHidden.*outOfHidden)) * OutputLayerWeights'*S2;
-   
  %  S1 = diag((ones(size(outOfHidden))-outOfHidden).*outOfHidden)*OutputLayerWeights'*S2;
    
    S1 = diag(ones(size(outOfHidden))-outOfHidden.*outOfHidden)*OutputLayerWeights'*S2;
@@ -52,16 +52,17 @@ while (tester > 0.05)
    
    HiddenLayerWeights = HiddenLayerWeights - LearningRate * S1 * Input(:,i)';
    
-   newB2 = biasOutput-LearningRate.*S2;
-   biasOutput = newB2;
+   biasOutput = biasOutput - LearningRate.*S2;
    
-   newB1 = biasHidden-LearningRate.*S1;
-   biasHidden = newB1;
+   biasHidden = biasHidden - LearningRate.*S1;
+   
    xVec(IterationCount) = IterationCount;
    ErrorVec(IterationCount) = sum(myError.^2);
-   tester = sum(myError.^2);
+  %tester = sum(myError.^2);
     
 end
+
+E = [ErrorVec(1:end-3) + ErrorVec(2:end-2) + ErrorVec(3:end-1)]/3;
 
 plot(xVec,ErrorVec)
 title('Backpropagation Network Training')

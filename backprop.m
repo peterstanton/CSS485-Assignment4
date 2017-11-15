@@ -62,15 +62,6 @@ while(IterationCount < 10000)
     outOfOutput = logsig(OutputLayerWeights * outOfHidden + biasOutput);
     
    myError = Output(:,i) - outOfOutput;
-  
-   S2 = -2.*diag(ones(size(outOfOutput))-outOfOutput.*outOfOutput)*myError;   
-   S1 = diag(ones(size(outOfHidden))-outOfHidden.*outOfHidden)*OutputLayerWeights'*S2;
-         
-   OutputLayerWeights = OutputLayerWeights - LearningRate * S2 * outOfHidden';  
-   HiddenLayerWeights = HiddenLayerWeights - LearningRate * S1 * Input(:,i)';
-   
-   biasOutput = biasOutput - LearningRate.*S2;
-   biasHidden = biasHidden - LearningRate.*S1;
    
    xVec(IterationCount) = IterationCount;
    ErrorVec0(IterationCount) = sum(myError.^2)/length(myError);
@@ -105,15 +96,6 @@ while(IterationCount < 5000)
     outOfOutput = logsig(OutputLayerWeights * outOfHidden + biasOutput);
     
    myError = Output(:,i) - outOfOutput;
-  
-   S2 = -2.*diag(ones(size(outOfOutput))-outOfOutput.*outOfOutput)*myError;   
-   S1 = diag(ones(size(outOfHidden))-outOfHidden.*outOfHidden)*OutputLayerWeights'*S2;
-         
-   OutputLayerWeights = OutputLayerWeights - LearningRate * S2 * outOfHidden';  
-   HiddenLayerWeights = HiddenLayerWeights - LearningRate * S1 * Input(:,i)';
-   
-   biasOutput = biasOutput - LearningRate.*S2;
-   biasHidden = biasHidden - LearningRate.*S1;
    
    xVec(IterationCount) = IterationCount;
    ErrorVec2(IterationCount) = sum(myError.^2)/length(myError);
@@ -156,23 +138,14 @@ while(IterationCount < 5000)
     outOfOutput = logsig(OutputLayerWeights * outOfHidden + biasOutput);
     
    myError = Output(:,i) - outOfOutput;
-  
-   S2 = -2.*diag(ones(size(outOfOutput))-outOfOutput.*outOfOutput)*myError;   
-   S1 = diag(ones(size(outOfHidden))-outOfHidden.*outOfHidden)*OutputLayerWeights'*S2;
-         
-   OutputLayerWeights = OutputLayerWeights - LearningRate * S2 * outOfHidden';  
-   HiddenLayerWeights = HiddenLayerWeights - LearningRate * S1 * Input(:,i)';
-   
-   biasOutput = biasOutput - LearningRate.*S2;
-   biasHidden = biasHidden - LearningRate.*S1;
-   
+     
    xVec(IterationCount) = IterationCount;
    ErrorVec3(IterationCount) = sum(myError.^2)/length(myError);
    tester = sum(myError.^2);    
 end
 
 figure(1)
-plot(xVec,ErrorVec1,xVec,ErrorVec2,xVec,ErrorVec3)
+plot(xVec,ErrorVec1)
 title('Backpropagation Network Training')
 xlabel('Backpropagation Iterations')
 ylabel('Squared Error')

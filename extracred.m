@@ -1,33 +1,54 @@
-function output = backprop()
+function output = extracred()
 
- in0 = [0,1,1,1,1,0,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0];
- in1 = [0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0];
- in2 = [1,0,0,0,0,0,1,0,0,1,1,1,1,0,0,1,0,1,0,1,1,0,0,1,0,0,0,0,0,1];
- 
- LearningRate = 0.07;
-  
- t0 = [1,0,0];
- t1 = [0,1,0];
- t2 = [0,0,1];
- 
- Input = [in0; in1; in2]';
- Output = [t0; t1; t2]';
- 
- NumHidLayerNeurons = 4;
- 
+
+p0 = [0,1,1,1,0,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0];
+p1 = [0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0];
+p2 = [1 1 1 0 0 0 0 0 1 0 0 0 0 1 0 0 1 1 0 0 0 1 0 0 0 0 1 1 1 1];
+p3 = [1 1 1 1 0 0 0 0 0 1 0 1 1 1 0 0 0 0 0 1 0 0 0 0 1 1 1 1 1 0];
+p4 = [1 0 0 0 1 1 0 0 0 1 1 1 1 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1];
+p5 = [1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 0];
+p6 = [0 1 1 1 1 1 0 0 0 0 1 1 1 1 0 1 0 0 0 1 1 0 0 0 1 0 1 1 1 0];
+p7 = [1 1 1 1 1 0 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0];
+
+LearningRate = 0.1;
+
+Input = [p0; p1; p2; p3; p4; p5; p6; p7]';
+
+
+t0 = [0 1 1 0 0 0 0];
+t1 = [0 1 1 0 0 0 1];
+t2 = [0 1 1 0 0 1 0];
+t3 = [0 1 1 0 0 1 1];
+t4 = [0 1 1 0 1 0 0];
+t5 = [0 1 1 0 1 0 1];
+t6 = [0 1 1 0 1 1 0];
+t7 = [0 1 1 0 1 1 1];
+
+Output = [t0; t1; t2; t3; t4; t5; t6; t7]';
+
+NumHidLayerNeurons = 90;
+
+
 HiddenLayerWeights = rand(NumHidLayerNeurons,30); % Weight matrix from Input to Hidden
-OutputLayerWeights = rand(3,NumHidLayerNeurons); % Weight matrix from Hidden to Output
+OutputLayerWeights = rand(7,NumHidLayerNeurons); % Weight matrix from Hidden to Output
 biasHidden = rand(NumHidLayerNeurons,1);         % Random bias.
-biasOutput = rand(3,1);
+biasOutput = rand(7,1);
+
 
 IterationCount = 0;  %Count passes.
-ErrorVec1(1:5000) = 0;
-xVec(1:5000) = 0;
-tester = 10.00;
+ErrorVec1(1:1000000) = 0;t0 = [0 1 1 0 0 0 0];
+t1 = [0 1 1 0 0 0 1];
+t2 = [0 1 1 0 0 1 0];
+t3 = [0 1 1 0 0 1 1];
+t4 = [0 1 1 0 1 0 0];
+t5 = [0 1 1 0 1 0 1];
+t6 = [0 1 1 0 1 1 0];
+t7 = [0 1 1 0 1 1 1];
+xVec(1:1000000) = 0;
 i = 0;
-%while (tester > 0.05)
-while(IterationCount < 5000)
-    if i == 3
+
+while(IterationCount < 10000)
+    if i == 8
         i = 1;
     else
         i = i + 1;
@@ -49,15 +70,12 @@ while(IterationCount < 5000)
    
    xVec(IterationCount) = IterationCount;
    ErrorVec1(IterationCount) = sum(myError.^2)/length(myError);
-   tester = sum(myError.^2);    
 end
 
 
 IterationCount = 0;  %Count passes.
 ErrorVec0(1:5000) = 0;
-tester = 10.00;
 i = 0;
-%while (tester > 0.05)
 while(IterationCount < 5000)
     if i == 3
         i = 1;
@@ -73,7 +91,6 @@ while(IterationCount < 5000)
    
    xVec(IterationCount) = IterationCount;
    ErrorVec0(IterationCount) = sum(myError.^2)/length(myError);
-   tester = sum(myError.^2);    
 end
 
 corrupt1 = randi([1 30]);
@@ -91,10 +108,8 @@ end
 
 ErrorVec2(1:5000) = 0;
 IterationCount = 0;
-tester = 10.0;
 myError = 0;
 i = 0;
-%while (tester > 0.05)
 while(IterationCount < 5000)
     if i == 3
         i = 1;
@@ -138,7 +153,6 @@ end
 
 ErrorVec3(1:5000) = 0;
 IterationCount = 0;
-tester = 10.0;
 myError = 0;
 i = 0;
 while(IterationCount < 5000)
@@ -155,8 +169,8 @@ while(IterationCount < 5000)
      
    xVec(IterationCount) = IterationCount;
    ErrorVec3(IterationCount) = sum(myError.^2)/length(myError);
-   tester = sum(myError.^2);    
 end
+
 
 figure(1)
 plot(xVec,ErrorVec1)
@@ -170,6 +184,6 @@ graphy = [mean(ErrorVec0) mean(ErrorVec2) mean(ErrorVec3)];
 
 figure(2)
 bar(graphx,graphy);
-title('Mean Error for Backpropagation Learning Digit Recognition')
+title('Mean Error for Backpropagation Learning Digit-to-ASCII Translation')
 xlabel('Corrupted Pixels')
 ylabel('Mean Error Rate')
